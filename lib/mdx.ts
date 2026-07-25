@@ -23,6 +23,23 @@ export interface BlogPost extends BlogFrontmatter {
     filePath: string;
 }
 
+/**
+ * Holds the parsed corpus for the life of the process in production.
+ *
+ * Every slug page loads the full corpus to find one post, so a static build of
+ * N pages re-reads N files N times. Development and tests opt out so editor
+ * saves and mocked filesystems stay visible.
+ */
+function memoizeInProduction<T>(load: () => Promise<T>): () => Promise<T> {
+    if (process.env.NODE_ENV !== "production") {
+        return load;
+    }
+
+    let pending: Promise<T> | undefined;
+
+    return () => (pending ??= load());
+}
+
 async function readAllProblems(): Promise<ProblemPost[]> {
     const contentDir = join(process.cwd(), "content", "problems");
     const posts: ProblemPost[] = [];
@@ -54,7 +71,7 @@ async function readAllProblems(): Promise<ProblemPost[]> {
  * Deduped per request via React cache() so multiple callers within one
  * render pass (e.g. generateMetadata + page component) share a single parse.
  */
-export const getAllProblems = cache(readAllProblems);
+export const getAllProblems = cache(memoizeInProduction(readAllProblems));
 
 export async function getProblemBySlug(slug: string): Promise<ProblemPost> {
     const posts = await getAllProblems();
@@ -110,7 +127,7 @@ async function readAllBlogPosts(): Promise<BlogPost[]> {
  * Deduped per request via React cache() so multiple callers within one
  * render pass (e.g. generateMetadata + page component) share a single parse.
  */
-export const getAllBlogPosts = cache(readAllBlogPosts);
+export const getAllBlogPosts = cache(memoizeInProduction(readAllBlogPosts));
 
 export async function getBlogPostBySlug(slug: string): Promise<BlogPost> {
     const posts = await getAllBlogPosts();
