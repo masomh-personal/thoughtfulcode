@@ -88,7 +88,7 @@ bun start
 | `bun run type-check:tests`          | Type-check library and solution tests                 |
 | `bun run test`                      | Run tests with Bun test runner                        |
 | `bun run test:coverage`             | Run tests with coverage report                        |
-| `bun run content:check`             | Validate all content and reject duplicate slugs       |
+| `bun run content:check`             | Validate content, slugs, and solution/post parity     |
 | `bun run healthcheck`               | Run formatting, type checks, lint, content, and tests |
 | `bun run clean`                     | Remove generated files and alternate locks, reinstall |
 | `bun run clean:next`                | Remove the Next.js build cache                        |
@@ -412,9 +412,17 @@ bun install
 
 ### Content Validation Errors
 
-`bun run content:check` validates every blog post and problem before release.
-Fix the reported frontmatter or duplicate slug rather than allowing a post to
-disappear from the generated site.
+`bun run content:check` validates every blog post and problem before release,
+and reports all failures at once. Beyond frontmatter schemas and duplicate
+slugs it enforces the invariants that live between files: filenames match the
+frontmatter `slug` that builds the route, problem posts keep the `# Problem`
+heading the layout splits on, every published problem has a `solutions/<slug>/`
+workspace, code fences use a language the renderer registers, and the code in a
+problem post matches `solutions/<slug>/solution.ts` verbatim.
+
+That last one is the important one: these solutions are presented as tested, so
+when the check reports drift, copy the tested file into the post rather than
+editing the post to look right.
 
 ### Git Hooks Not Running
 
@@ -480,6 +488,10 @@ This generates `content/problems/two-sum.md` with:
 - Frontmatter from metadata.json
 - Your solution code
 - Template sections for explanation
+
+Publishing is one-way. Once the file exists the markdown is the source of
+truth, so a second run refuses to overwrite the analysis you wrote by hand.
+Pass `--force` if you really do want the template back.
 
 **Step 5: Add Explanations**
 
