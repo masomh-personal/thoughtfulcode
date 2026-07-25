@@ -59,7 +59,7 @@ export const metadata: Metadata = {
             "Software engineering notes, system design, and tested code problems from Masom Hamadeh.",
     },
     twitter: {
-        card: "summary",
+        card: "summary_large_image",
         title: `${SITE_NAME} | ${AUTHOR_NAME}`,
         description:
             "Software engineering notes, system design, and tested code problems from Masom Hamadeh.",

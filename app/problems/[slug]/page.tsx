@@ -9,7 +9,7 @@ import {
     listPublishedProblems,
 } from "@/lib/content/problems";
 import { formatPublishedDate } from "@/lib/date";
-import { AUTHOR_NAME, SITE_NAME } from "@/lib/site";
+import { absoluteUrl, AUTHOR_NAME, SITE_NAME } from "@/lib/site";
 
 interface PageProps {
     params: Promise<{ slug: string }>;
@@ -80,7 +80,7 @@ export async function generateMetadata({
                 authors: [AUTHOR_NAME],
             },
             twitter: {
-                card: "summary",
+                card: "summary_large_image",
                 title: problem.title,
                 description: problem.excerpt,
             },
@@ -111,9 +111,33 @@ export default async function ProblemPostPage({
     const { problemContent, remainingContent } = getProblemSectionContent(
         problem.content
     );
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        headline: problem.title,
+        description: problem.excerpt,
+        datePublished: problem.datePublished,
+        proficiencyLevel: problem.difficulty,
+        author: {
+            "@type": "Person",
+            name: AUTHOR_NAME,
+        },
+        publisher: {
+            "@type": "Person",
+            name: AUTHOR_NAME,
+        },
+        mainEntityOfPage: absoluteUrl(`/problems/${problem.slug}`),
+        url: absoluteUrl(`/problems/${problem.slug}`),
+    };
 
     return (
         <PageContainer>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+                }}
+            />
             <article className="surface-card radius-card card-chrome p-6 md:p-10">
                 <header>
                     <div className="mb-5 flex flex-wrap items-center gap-x-3 gap-y-2">
