@@ -40,7 +40,7 @@ export function twoSum(nums: number[], target: number): number[] {
     const seen = new Map<number, number>();
 
     for (let idx = 0; idx < nums.length; idx++) {
-        const curr = nums[idx];
+        const curr = nums[idx]!;
         const complement = target - curr;
         const complementIndex = seen.get(complement);
 

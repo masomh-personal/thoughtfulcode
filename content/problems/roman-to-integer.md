@@ -108,8 +108,8 @@ export function romanToInt(s: string): number {
     let result = 0;
 
     for (let i = 0; i < s.length; i++) {
-        const currCharInt = romanMap.get(s[i]) ?? 0;
-        const nextCharInt = romanMap.get(s[i + 1]) ?? 0;
+        const currCharInt = romanMap.get(s.charAt(i)) ?? 0;
+        const nextCharInt = romanMap.get(s.charAt(i + 1)) ?? 0;
 
         if (currCharInt < nextCharInt) {
             result += nextCharInt - currCharInt;

@@ -67,7 +67,9 @@ export function threeSum(nums: number[]): number[][] {
     const triplets: number[][] = [];
 
     for (let i = 0; i < sorted.length - 2; i++) {
-        if (i > 0 && sorted[i] === sorted[i - 1]) {
+        const pivot = sorted[i]!;
+
+        if (i > 0 && pivot === sorted[i - 1]) {
             continue;
         }
 
@@ -75,10 +77,12 @@ export function threeSum(nums: number[]): number[][] {
         let right = sorted.length - 1;
 
         while (left < right) {
-            const sum = sorted[i] + sorted[left] + sorted[right];
+            const leftValue = sorted[left]!;
+            const rightValue = sorted[right]!;
+            const sum = pivot + leftValue + rightValue;
 
             if (sum === 0) {
-                triplets.push([sorted[i], sorted[left], sorted[right]]);
+                triplets.push([pivot, leftValue, rightValue]);
                 left++;
                 right--;
 

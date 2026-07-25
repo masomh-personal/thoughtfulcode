@@ -69,15 +69,20 @@ export function trap(height: number[]): number {
     let trapped = 0;
 
     while (left < right) {
-        if (height[left] <= height[right]) {
-            maxLeft = Math.max(maxLeft, height[left]);
-            trapped += maxLeft - height[left];
+        // The shorter bar is the binding wall, so its side can be committed
+        // now: a taller-or-equal bar already exists on the other end.
+        const leftHeight = height[left] ?? 0;
+        const rightHeight = height[right] ?? 0;
+
+        if (leftHeight <= rightHeight) {
+            maxLeft = Math.max(maxLeft, leftHeight);
+            trapped += maxLeft - leftHeight;
             left++;
             continue;
         }
 
-        maxRight = Math.max(maxRight, height[right]);
-        trapped += maxRight - height[right];
+        maxRight = Math.max(maxRight, rightHeight);
+        trapped += maxRight - rightHeight;
         right--;
     }
 

@@ -5,8 +5,13 @@
  *
  * Generates public markdown from a completed local solution.
  *
+ * Generation is one-way: the published markdown is the source of truth once it
+ * exists, because authors add the problem statement, approach, and analysis by
+ * hand. Republishing therefore requires --force.
+ *
  * Usage:
  *   bun run publish:problem two-sum
+ *   bun run publish:problem two-sum --force
  */
 
 import { existsSync } from "node:fs";
@@ -16,6 +21,7 @@ import {
     type ProblemFrontmatter,
     validateProblemFrontmatter,
 } from "@/lib/schemas";
+import { stripSolutionHeaderComment } from "@/lib/solution-code";
 
 async function readSolutionFiles(slug: string): Promise<{
     metadata: ProblemFrontmatter;
@@ -75,24 +81,6 @@ function validateMetadata(
     }
 }
 
-function extractSolutionCode(solution: string): string {
-    const lines = solution.split("\n");
-    let startIndex = 0;
-
-    for (let i = 0; i < lines.length; i++) {
-        const line = lines[i];
-        if (line?.trim().startsWith("/**")) {
-            while (i < lines.length && !lines[i]?.includes("*/")) {
-                i++;
-            }
-            startIndex = i + 1;
-            break;
-        }
-    }
-
-    return lines.slice(startIndex).join("\n").trim();
-}
-
 function generateMarkdown(
     metadata: ProblemFrontmatter,
     solution: string
@@ -108,7 +96,7 @@ spaceComplexity: ${JSON.stringify(metadata.spaceComplexity)}
 excerpt: ${JSON.stringify(metadata.excerpt)}
 ---`;
 
-    const solutionCode = extractSolutionCode(solution);
+    const solutionCode = stripSolutionHeaderComment(solution);
 
     return `${frontmatter}
 
@@ -133,18 +121,27 @@ ${solutionCode}
 `;
 }
 
-async function publish(slug: string): Promise<void> {
+async function publish(slug: string, force: boolean): Promise<void> {
     console.log(`Reading solution files for: ${slug}...`);
 
     try {
         const { metadata, solution } = await readSolutionFiles(slug);
         validateMetadata(metadata, slug);
 
-        const markdownContent = generateMarkdown(metadata, solution);
         const contentDir = join(process.cwd(), "content", "problems");
-        await mkdir(contentDir, { recursive: true });
-
         const markdownPath = join(contentDir, `${slug}.md`);
+
+        if (existsSync(markdownPath) && !force) {
+            throw new Error(
+                `content/problems/${slug}.md already exists.\n` +
+                    `Publishing regenerates the template and would discard the problem statement,\n` +
+                    `approach, and analysis written since. Edit the file directly, or pass --force\n` +
+                    `to overwrite it.`
+            );
+        }
+
+        const markdownContent = generateMarkdown(metadata, solution);
+        await mkdir(contentDir, { recursive: true });
         await writeFile(markdownPath, markdownContent);
 
         console.log(`\nPublished: content/problems/${slug}.md`);
@@ -159,13 +156,15 @@ async function publish(slug: string): Promise<void> {
     }
 }
 
-const slug = process.argv[2];
+const args = process.argv.slice(2);
+const force = args.includes("--force");
+const slug = args.find((arg) => !arg.startsWith("--"));
 
 if (!slug) {
-    console.error("Usage: bun run publish:problem <slug>");
+    console.error("Usage: bun run publish:problem <slug> [--force]");
     console.error("\nExample:");
     console.error("  bun run publish:problem two-sum");
     process.exit(1);
 }
 
-await publish(slug);
+await publish(slug, force);

@@ -267,6 +267,17 @@ describe("getAllProblems", () => {
 
         expect(result).toEqual([]);
     });
+
+    test("rejects duplicate slugs", async () => {
+        mockDirents = [file("two-sum.md"), file("duplicate-two-sum.md")];
+        mockFileMap.set("two-sum.md", PROBLEM_TWO_SUM);
+        mockFileMap.set("duplicate-two-sum.md", PROBLEM_TWO_SUM);
+
+        const expected = 'Duplicate problem slug "two-sum"';
+        const result = getAllProblems();
+
+        expect(result).rejects.toThrow(expected);
+    });
 });
 
 describe("getProblemBySlug", () => {
