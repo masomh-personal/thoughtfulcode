@@ -12,7 +12,7 @@ A modern, performance-focused portfolio website showcasing software engineering 
 | --------------------------- | ------------------------------------------- | --------------------------------------------------------------------------------- |
 | **Framework**               | Next.js 16 (App Router)                     | Production-ready, excellent docs, perfect for SSG + SEO, React 19 support         |
 | **React**                   | React 19                                    | Server Components, enhanced performance, required for Next.js 16                  |
-| **Language**                | TypeScript 7 beta via `tsgo`                | Fast native type checking with TypeScript 6 fallback for tooling compatibility    |
+| **Language**                | TypeScript 7 (native Go compiler)           | Native-speed type checking, with TypeScript 6 kept only for Next.js build tooling |
 | **Styling**                 | Tailwind CSS                                | Utility-first, fast development, great with Next.js                               |
 | **Content**                 | Markdown + react-markdown                   | Version-controlled content rendered as Server Components                          |
 | **Syntax Highlighting**     | rehype-highlight                            | Build-time highlighting without a client-side syntax highlighter                  |
@@ -83,8 +83,7 @@ bun start
 | `bun run check:staged`              | Format and lint supported staged files before commit  |
 | `bun run format`                    | Format code with Oxfmt                                |
 | `bun run format:check`              | Check formatting without writing changes              |
-| `bun run type-check`                | Run TypeScript 7 beta type checking with `tsgo`       |
-| `bun run type-check:tsc`            | Run TypeScript 6 fallback type checking with `tsc`    |
+| `bun run type-check`                | Run TypeScript 7 type checking with `tsc`             |
 | `bun run type-check:tests`          | Type-check library and solution tests                 |
 | `bun run test`                      | Run tests with Bun test runner                        |
 | `bun run test:coverage`             | Run tests with coverage report                        |
@@ -151,13 +150,12 @@ describe("Feature Name", () => {
 - **Formatting:** Oxfmt with 4-space indentation and project config in `.oxfmtrc.json`
 - **Staged files:** `scripts/check-staged.ts` is available for explicit staged format and lint checks
 - **Quality gates:** `healthcheck` combines format checking, type-checking, linting, and tests
-
 ### TypeScript
 
 - **Strict Mode:** Enabled
 - **Explicit Return Types:** Required for all exported functions
-- **Type Checking:** Run `bun run type-check` before committing. This uses TypeScript 7 beta's native `tsgo` checker.
-- **Fallback Check:** Run `bun run type-check:tsc` when comparing behavior with the TypeScript 6 package that framework tooling can still import.
+- **Type Checking:** Run `bun run type-check` before committing. This uses the TypeScript 7 native compiler.
+- **TypeScript 6:** Still installed, but only so `next build` can load the compiler API that TypeScript 7 does not ship yet. See [`docs/typescript-conventions.md`](docs/typescript-conventions.md).
 - **Typing Convention:** `interface` for object/props contracts, `type` for unions/aliases
 
 ### Git Hooks
