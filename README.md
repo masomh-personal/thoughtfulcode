@@ -81,6 +81,7 @@ bun start
 | `bun run check`                     | Run Oxlint checks                                     |
 | `bun run check:fix`                 | Fix linting issues, then format with Oxfmt            |
 | `bun run check:staged`              | Format and lint supported staged files before commit  |
+| `bun run check:toolchain`           | Verify Bun's shim cache is not corrupted              |
 | `bun run format`                    | Format code with Oxfmt                                |
 | `bun run format:check`              | Check formatting without writing changes              |
 | `bun run type-check`                | Run TypeScript 7 type checking with `tsc`             |
@@ -150,6 +151,8 @@ describe("Feature Name", () => {
 - **Formatting:** Oxfmt with 4-space indentation and project config in `.oxfmtrc.json`
 - **Staged files:** `scripts/check-staged.ts` is available for explicit staged format and lint checks
 - **Quality gates:** `healthcheck` combines format checking, type-checking, linting, and tests
+- **Toolchain guard:** `healthcheck` and both git hooks start with `scripts/check-toolchain.sh`, which verifies Bun's shared `/tmp/bun-node-*` shim before anything else. A corrupted shim makes every script launch the wrong program and exit 0, so checks would pass without running. If it fails, run `rm -rf /tmp/bun-node-*`
+
 ### TypeScript
 
 - **Strict Mode:** Enabled
@@ -162,7 +165,7 @@ describe("Feature Name", () => {
 
 **Pre-commit (Husky):**
 
-- Type check only, so local commits do not depend on machine-specific native formatter bindings
+- Toolchain guard, then type check only, so local commits do not depend on machine-specific native formatter bindings
 
 **Pre-push (Husky):**
 

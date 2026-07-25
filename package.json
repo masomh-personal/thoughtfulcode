@@ -12,6 +12,7 @@
         "check": "bun --bun oxlint --react-plugin --jsx-a11y-plugin --nextjs-plugin .",
         "check:fix": "bun --bun oxlint --fix --react-plugin --jsx-a11y-plugin --nextjs-plugin . && bun --bun oxfmt --write .",
         "check:staged": "bun scripts/check-staged.ts",
+        "check:toolchain": "sh scripts/check-toolchain.sh",
         "format": "bun --bun oxfmt --write .",
         "format:check": "bun --bun oxfmt --check .",
         "type-check": "bun --bun ./node_modules/@typescript/native/bin/tsc --noEmit",
@@ -21,7 +22,7 @@
         "content:check": "bun scripts/check-content.ts",
         "clean": "bun scripts/clean.ts",
         "clean:next": "bun scripts/clean-next.ts",
-        "healthcheck": "bun run format:check && bun run type-check && bun run type-check:tests && bun run check && bun run content:check && bun run test",
+        "healthcheck": "sh scripts/check-toolchain.sh && bun run format:check && bun run type-check && bun run type-check:tests && bun run check && bun run content:check && bun run test",
         "new:problem": "bun scripts/new-problem.ts",
         "publish:problem": "bun scripts/publish-problem.ts",
         "prepare": "bun --bun husky"
