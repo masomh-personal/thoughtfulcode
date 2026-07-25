@@ -1,5 +1,3 @@
-"use client";
-
 import { PaginationNav } from "@/components/ui";
 
 function mockHref(_page: number): string {
