@@ -48,7 +48,7 @@ export function TagFilterBar({
                         onClick={onClearAll}
                         inert={hasActiveTags ? undefined : true}
                         className={cn(
-                            "text-content-subtle hover:text-content inline-flex cursor-pointer items-center gap-1 rounded border border-surface-outline/50 bg-surface-outline/10 px-2 py-0.5 text-[0.65rem] font-semibold uppercase tracking-wide transition-all duration-150 hover:border-surface-outline hover:bg-surface-outline/20",
+                            "text-content-subtle hover:text-content inline-flex min-h-8 cursor-pointer items-center gap-1 rounded border border-surface-outline/50 bg-surface-outline/10 px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-wide transition-all duration-150 hover:border-surface-outline hover:bg-surface-outline/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900",
                             !hasActiveTags && "invisible"
                         )}
                     >
@@ -69,7 +69,7 @@ export function TagFilterBar({
                                 aria-pressed={isActive}
                                 aria-label={`Filter by ${label}`}
                                 className={cn(
-                                    "inline-flex cursor-pointer items-center gap-[0.28rem] rounded-md border px-2.5 py-[0.3rem] font-baloo text-[0.6875rem] font-semibold leading-none uppercase tracking-[0.03em] whitespace-nowrap transition-all duration-150",
+                                    "inline-flex min-h-8 cursor-pointer items-center gap-[0.28rem] rounded-md border px-3 py-1.5 font-baloo text-[0.6875rem] font-semibold leading-none uppercase tracking-[0.03em] whitespace-nowrap transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900",
                                     isActive
                                         ? "opacity-100 shadow-sm"
                                         : hasActiveTags

@@ -88,7 +88,7 @@ export function Header() {
                                         external
                                         variant="muted"
                                         showIcon={false}
-                                        className="inline-flex items-center justify-center rounded-md p-0 leading-none"
+                                        className="inline-flex min-h-9 min-w-9 items-center justify-center rounded-md p-2 leading-none"
                                         aria-label={item.name}
                                     >
                                         <Icon className="size-(--icon-size-header)" />
@@ -120,7 +120,7 @@ export function Header() {
                             ref={menuButtonRef}
                             type="button"
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                            className="rounded-md p-2 text-muted transition-colors hover:bg-slate-800 hover:text-primary"
+                            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md p-2 text-muted transition-colors hover:bg-slate-800 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-(--background)"
                             aria-label={
                                 mobileMenuOpen
                                     ? "Close navigation menu"

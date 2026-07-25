@@ -82,7 +82,7 @@ hover:scale-[1.015] active:scale-[0.99] motion-reduce:transform-none data-[disab
 [&_svg]:block [&_svg]:shrink-0
 after:pointer-events-none after:absolute after:inset-[-1px] after:rounded-[inherit] after:opacity-0 after:transition-[opacity,box-shadow] after:duration-200 after:content-[''] hover:after:opacity-100 hover:after:shadow-[0_0_0_1px_rgba(125,211,252,0.55),0_0_14px_rgba(56,189,248,0.24)] data-[disabled]:hover:after:opacity-0
 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60
-focus:outline-none focus:ring-1 focus:ring-sky-400 focus:ring-offset-1 focus:ring-offset-slate-900`;
+focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-sky-400 focus-visible:ring-offset-1 focus-visible:ring-offset-slate-900`;
 
 function getButtonClasses({
     variant,
@@ -143,7 +143,7 @@ function getButtonContent({
     if (isLoading) {
         const loadingIconNode = loadingIcon ?? (
             <HiCode
-                className="animate-[spin_1.6s_linear_infinite]"
+                className="animate-[spin_1.6s_linear_infinite] motion-reduce:animate-none"
                 aria-hidden="true"
             />
         );
