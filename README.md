@@ -151,7 +151,7 @@ describe("Feature Name", () => {
 - **Formatting:** Oxfmt with 4-space indentation and project config in `.oxfmtrc.json`
 - **Staged files:** `scripts/check-staged.ts` is available for explicit staged format and lint checks
 - **Quality gates:** `healthcheck` combines format checking, type-checking, linting, and tests
-- **Toolchain guard:** `healthcheck` and both git hooks start with `scripts/check-toolchain.sh`, which verifies Bun's shared `/tmp/bun-node-*` shim before anything else. A corrupted shim makes every script launch the wrong program and exit 0, so checks would pass without running. If it fails, run `rm -rf /tmp/bun-node-*`
+- **Toolchain guard:** `healthcheck` and both git hooks start with `scripts/check-toolchain.sh`, which asks `bun` to identify itself through the same lookup a package script uses. Bun prepends a shared, version-keyed temp directory to `PATH` so `bun` and `node` resolve inside scripts, and reuses it without revalidating. If another process fills it with the wrong executable, every script launches that program instead, exits 0, and the whole chain reports success without running. The check is behavioral rather than path-based so it works the same on Linux, macOS, and Windows. If it fails, run `rm -rf "${TMPDIR:-/tmp}"/bun-node-*`
 
 ### TypeScript
 
