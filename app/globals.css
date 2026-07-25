@@ -12,16 +12,6 @@
     --font-body: var(--font-body-gf), ui-sans-serif, system-ui, sans-serif;
     --font-baloo: var(--font-accent-gf), ui-sans-serif, system-ui, sans-serif;
     --font-lexend: var(--font-body-gf), ui-sans-serif, system-ui, sans-serif;
-    --font-plus-jakarta:
-        var(--font-plus-jakarta-gf), ui-sans-serif, system-ui, sans-serif;
-    --font-inter: var(--font-inter-gf), ui-sans-serif, system-ui, sans-serif;
-    --font-manrope:
-        var(--font-manrope-gf), ui-sans-serif, system-ui, sans-serif;
-    --font-open-sans:
-        var(--font-open-sans-gf), ui-sans-serif, system-ui, sans-serif;
-    --font-source-sans:
-        var(--font-source-sans-gf), ui-sans-serif, system-ui, sans-serif;
-    --font-rounded: var(--font-rounded), ui-sans-serif, system-ui, sans-serif;
     --font-mono:
         var(--font-mono-fira), ui-monospace, SFMono-Regular, "SF Mono", Menlo,
         Consolas, monospace;
@@ -209,34 +199,6 @@
     .font-baloo {
         font-family:
             var(--font-accent-gf), ui-sans-serif, system-ui, sans-serif;
-    }
-
-    .font-rounded {
-        font-family: var(--font-rounded), ui-sans-serif, system-ui, sans-serif;
-    }
-
-    .font-plus-jakarta {
-        font-family:
-            var(--font-plus-jakarta-gf), ui-sans-serif, system-ui, sans-serif;
-    }
-
-    .font-inter {
-        font-family: var(--font-inter-gf), ui-sans-serif, system-ui, sans-serif;
-    }
-
-    .font-manrope {
-        font-family:
-            var(--font-manrope-gf), ui-sans-serif, system-ui, sans-serif;
-    }
-
-    .font-open-sans {
-        font-family:
-            var(--font-open-sans-gf), ui-sans-serif, system-ui, sans-serif;
-    }
-
-    .font-source-sans {
-        font-family:
-            var(--font-source-sans-gf), ui-sans-serif, system-ui, sans-serif;
     }
 }
 

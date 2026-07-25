@@ -126,11 +126,6 @@ export function BadgeShowcase() {
                             text="Heading"
                         />
                         <Badge
-                            variant="tertiary"
-                            className="font-rounded"
-                            text="Rounded"
-                        />
-                        <Badge
                             variant="brand"
                             className="font-sans"
                             text="Sans"
