@@ -6,6 +6,7 @@ alwaysApply: true
 # Dependency and Tooling Policy
 
 - Use Bun/Bunx for scripts and package operations in this repo.
+- Agents invoking Bun from a terminal must prefix it with `env`, as in `env bun run healthcheck`. Bun writes whatever `argv[0]` it receives into the `bun` and `node` symlinks it shares across the machine, and some editors launch shells that pass their own binary as `argv[0]`. Those scripts then silently run the editor and exit 0, so every check passes without running. `env` re-execs with a correct `argv[0]`. Drop this once Bun resolves the shim target from the executable path rather than `argv[0]`.
 - Keep lint/format on Oxfmt and Oxlint; do not add ESLint/Prettier unless explicitly requested.
 - Prefer per-repo dependencies over global installs.
 - Do not add a new dependency without clear user benefit and justification.
