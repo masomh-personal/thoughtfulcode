@@ -88,7 +88,7 @@ interface BadgeProps extends React.ComponentProps<"span"> {
 
 For additional examples and a quick decision guide, see [`docs/typescript-conventions.md`](./typescript-conventions.md).
 
-### Bun v1.3.14
+### Bun
 
 **Why:**
 
@@ -100,8 +100,18 @@ For additional examples and a quick decision guide, see [`docs/typescript-conven
 **Runtime policy:**
 
 - Bun is the only supported package manager and local JavaScript runtime.
-- Package scripts resolve the Bun executable explicitly instead of relying on
-  Node-compatible CLI shebangs.
+- `engines.bun` in `package.json` is the single source of truth for which
+  versions are supported. `packageManager` pins the exact version CI installs,
+  and `scripts/ensure-bun.ts` fails the build if either one is not honored.
+  Vercel is exempt from the range because it provisions its own Bun, and the
+  range exists for development tooling rather than the production build.
+- Scripts that run our own code, and the Next.js CLI, invoke Bun explicitly.
+- Oxc's binaries (Oxfmt, Oxlint) are launched through `node_modules/.bin`
+  rather than forced onto Bun's runtime with `--bun`. They are native binaries
+  behind a thin JS entry point, so the flag bought nothing and coupled the
+  formatter to Bun-specific Node-API behavior. `bun run` already resolves
+  `node` to Bun inside scripts, so this changes which code runs the launcher,
+  not which runtime the repo standardizes on.
 - Vercel owns the managed Next.js production runtime independently from the
   repository's local toolchain.
 

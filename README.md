@@ -19,7 +19,7 @@ A modern, performance-focused portfolio website showcasing software engineering 
 | **Frontmatter Parsing**     | @11ty/gray-matter                           | Extract metadata from Markdown files                                              |
 | **Frontmatter Validation**  | Valibot                                     | Lightweight schema validation (~1KB vs Zod's ~14KB), better performance           |
 | **Linting & Formatting**    | Oxfmt + Oxlint                              | Oxc-powered formatter and linter with fast JS/TS, React, a11y, and Next.js checks |
-| **Runtime**                 | Bun v1.3.14                                 | Fast installs, built-in test runner, instant TypeScript, production-ready         |
+| **Runtime**                 | Bun (version pinned in `package.json`)      | Fast installs, built-in test runner, instant TypeScript, production-ready         |
 | **BaaS (Future, optional)** | Supabase / Appwrite                         | Add only when write-path/auth requirements appear                                 |
 | **Deployment**              | Vercel                                      | Git-native deploys, previews for PRs, simple static-first workflow                |
 | **UI Approach**             | Custom wrapper components (`components/ui`) | Design-system control with lightweight dependencies                               |
@@ -31,7 +31,9 @@ A modern, performance-focused portfolio website showcasing software engineering 
 
 ### Prerequisites
 
-- **Bun** v1.3.14 ([Install Bun](https://bun.sh/docs/installation))
+- **Bun** ([Install Bun](https://bun.sh/docs/installation)), matching the
+  `engines.bun` range in `package.json`. Run `bun upgrade` if you are behind;
+  `bun install` refuses to run on an unsupported version.
 - **Git** for version control
 
 Node.js is not required. Package installation, local development, builds, tests,
@@ -152,6 +154,7 @@ describe("Feature Name", () => {
 - **Staged files:** `scripts/check-staged.ts` is available for explicit staged format and lint checks
 - **Quality gates:** `healthcheck` combines format checking, type-checking, linting, and tests
 - **Toolchain guard:** `healthcheck` and both git hooks start with `scripts/check-toolchain.sh`, which asks `bun` to identify itself through the same lookup a package script uses. Bun prepends a shared, version-keyed temp directory to `PATH` so `bun` and `node` resolve inside scripts, and reuses it without revalidating. If another process fills it with the wrong executable, every script launches that program instead, exits 0, and the whole chain reports success without running. The check is behavioral rather than path-based so it works the same on Linux, macOS, and Windows. If it fails, run `rm -rf "${TMPDIR:-/tmp}"/bun-node-*`
+- **Version guard:** once Bun has identified itself, the same script hands off to `scripts/ensure-bun.ts`, which rejects any Bun outside the `engines.bun` range and refuses to let `packageManager` drift outside it. Bun enforces neither field on its own, so an out-of-date local install otherwise fails inside whichever tool needed the newer version, with nothing pointing at the real cause. `dev`, `build`, `healthcheck`, `preinstall`, and both git hooks all run it, so a stale Bun is caught on the first command rather than at the first commit. Vercel is exempt, since it provisions the production runtime itself
 
 ### TypeScript
 

@@ -63,9 +63,9 @@ export function CopyCodeButton({ code, language }: CopyCodeButtonProps) {
                     />
                 )}
             </button>
-            <span role="status" aria-live="polite" className="sr-only">
+            <output aria-live="polite" className="sr-only">
                 {statusMessage}
-            </span>
+            </output>
         </>
     );
 }

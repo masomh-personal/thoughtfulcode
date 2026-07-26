@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 #
-# Fails fast when `bun` inside a package script is not actually Bun.
+# Fails fast when `bun` inside a package script is not actually Bun, or is a
+# Bun that this project does not support.
 #
 # `bun run` prepends a shared temporary directory to PATH containing `bun` and
 # `node` symlinks, so that shebang scripts resolve to Bun. That directory is
@@ -16,13 +17,18 @@
 # POSIX sh on purpose. A guard written in TypeScript would be started through
 # the very lookup it exists to validate. Husky already requires sh for hooks, so
 # this adds no new dependency.
+#
+# Once Bun has identified itself, the version contract is checked in TypeScript
+# instead of here. Comparing semver ranges in sh means hand-rolling arithmetic
+# that `Bun.semver` already does correctly, and by that point running TypeScript
+# is safe because the lookup this script guards has just been validated.
 
 set -eu
 
 reported=$(bun --version 2>/dev/null || true)
 
 case $reported in
-    [0-9]*.[0-9]*.[0-9]*) exit 0 ;;
+    [0-9]*.[0-9]*.[0-9]*) exec bun scripts/ensure-bun.ts ;;
 esac
 
 resolved=$(command -v bun 2>/dev/null || echo "nothing on PATH")
