@@ -56,7 +56,7 @@
         "oxlint": "^1.75.0",
         "postcss": "^8.5.19",
         "tailwindcss": "^4.3.3",
-        "typescript": "^6.0.3"
+        "typescript": "^7.0.2"
     },
     "overrides": {
         "postcss": "^8.5.23",
