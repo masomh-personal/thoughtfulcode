@@ -6,12 +6,12 @@ interface BlogTagPresentation {
 
 interface BlogTagColorDefinition {
     color: string;
-    bgColor: string;
 }
+
+const BLOG_TAG_BACKGROUND_ALPHA = "2E";
 
 const DEFAULT_TAG_COLOR: BlogTagColorDefinition = {
     color: "#94A3B8",
-    bgColor: "#94A3B814",
 };
 
 /**
@@ -19,24 +19,29 @@ const DEFAULT_TAG_COLOR: BlogTagColorDefinition = {
  * Add new tags here as content grows.
  */
 const BLOG_TAG_COLOR_MAP: Record<string, BlogTagColorDefinition> = {
-    engineering: { color: "#FACC15", bgColor: "#FACC1514" },
-    nextjs: { color: "#60A5FA", bgColor: "#60A5FA14" },
-    markdown: { color: "#F472B6", bgColor: "#F472B614" },
-    tooling: { color: "#E879F9", bgColor: "#E879F914" },
-    collaboration: { color: "#2DD4BF", bgColor: "#2DD4BF14" },
-    typescript: { color: "#38BDF8", bgColor: "#38BDF814" },
-    backend: { color: "#34D399", bgColor: "#34D39914" },
-    async: { color: "#FB7185", bgColor: "#FB718514" },
-    ai: { color: "#22D3EE", bgColor: "#22D3EE14" },
-    react: { color: "#67E8F9", bgColor: "#67E8F914" },
-    dsa: { color: "#93C5FD", bgColor: "#93C5FD14" },
-    methodology: { color: "#C4B5FD", bgColor: "#C4B5FD14" },
-    fundamentals: { color: "#6EE7B7", bgColor: "#6EE7B714" },
-    solid: { color: "#F59E0B", bgColor: "#F59E0B14" },
-    "system-design": { color: "#F87171", bgColor: "#F8717114" },
-    career: { color: "#A3E635", bgColor: "#A3E63514" },
-    learning: { color: "#D8B4FE", bgColor: "#D8B4FE14" },
-    leadership: { color: "#F97316", bgColor: "#F9731614" },
+    engineering: { color: "#FACC15" },
+    nextjs: { color: "#60A5FA" },
+    markdown: { color: "#F472B6" },
+    tooling: { color: "#E879F9" },
+    collaboration: { color: "#2DD4BF" },
+    typescript: { color: "#38BDF8" },
+    backend: { color: "#34D399" },
+    async: { color: "#FB7185" },
+    ai: { color: "#22D3EE" },
+    api: { color: "#22C55E" },
+    bun: { color: "#FB923C" },
+    cost: { color: "#FDE047" },
+    dependencies: { color: "#818CF8" },
+    react: { color: "#67E8F9" },
+    security: { color: "#F43F5E" },
+    dsa: { color: "#93C5FD" },
+    methodology: { color: "#C4B5FD" },
+    fundamentals: { color: "#6EE7B7" },
+    solid: { color: "#F59E0B" },
+    "system-design": { color: "#F87171" },
+    career: { color: "#A3E635" },
+    learning: { color: "#D8B4FE" },
+    leadership: { color: "#F97316" },
 };
 
 function assertUniqueBlogTagColors(
@@ -69,12 +74,11 @@ assertUniqueBlogTagColors(BLOG_TAG_COLOR_MAP);
 
 export function getBlogTagPresentation(tag: string): BlogTagPresentation {
     const normalizedTag = tag.trim().toLowerCase();
-    const { color, bgColor } =
-        BLOG_TAG_COLOR_MAP[normalizedTag] ?? DEFAULT_TAG_COLOR;
+    const { color } = BLOG_TAG_COLOR_MAP[normalizedTag] ?? DEFAULT_TAG_COLOR;
 
     return {
         text: normalizedTag.toUpperCase(),
         color,
-        bgColor,
+        bgColor: `${color}${BLOG_TAG_BACKGROUND_ALPHA}`,
     };
 }
