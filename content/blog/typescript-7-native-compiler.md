@@ -2,6 +2,7 @@
 title: "TypeScript 7 and the Native Compiler Shift"
 slug: "typescript-7-native-compiler"
 datePublished: "2026-05-02"
+updatedAt: "2026-08-22"
 excerpt: "TypeScript 7 matters because the compiler is moving to a native Go foundation, making type checking faster while keeping the migration path practical."
 tags: ["engineering", "tooling", "typescript"]
 ---
@@ -56,37 +57,28 @@ The difference is that TypeScript is not optional for many teams. A faster forma
 
 ## What Changes In Practice
 
-The beta is currently published as `@typescript/native-preview`, and the command is `tsgo`.
+TypeScript 7 is now stable under the normal `typescript` package, and the native compiler uses the familiar `tsc` command.
 
-That naming is temporary. The stable TypeScript 7 release is expected to move back under the normal `typescript` package and `tsc` command. For now, the preview package lets teams run TypeScript 7 side by side with TypeScript 6.
-
-That side-by-side story is important.
-
-In this project, the default type check now runs through TypeScript 7:
+In this project, both type-check scripts run through that single TypeScript 7 dependency:
 
 ```bash
 bun run type-check
+bun run type-check:tests
 ```
 
-That script calls:
+The application check calls:
 
 ```bash
-tsgo --noEmit
+tsc --noEmit
 ```
 
-The TypeScript 6 path still exists:
-
-```bash
-bun run type-check:tsc
-```
-
-That fallback matters because some tools still import the standard `typescript` package or depend on the existing JavaScript API. TypeScript 7 beta is ready to try for day-to-day checks, but the programmatic API story is still settling. Keeping both paths makes the migration easy to test and easy to reverse.
+Next.js 16.3 can also run the project-local TypeScript CLI during `next build`. That removed the last reason this repo carried TypeScript 6 beside TypeScript 7. Local checks, CI, and production builds now agree on one compiler.
 
 ## Why Bun Makes This Easy
 
-Bun fits this experiment well because the repo already uses Bun as the command surface.
+Bun fits this migration well because the repo already uses Bun as the command surface.
 
-Adding the beta package is just a dev dependency. Running the checker is just another script. The workflow stays familiar:
+Updating the compiler is a dev dependency change. Running it is still just another script, so the workflow stays familiar:
 
 ```bash
 bun install
@@ -94,23 +86,20 @@ bun run type-check
 bun run healthcheck
 ```
 
-That is the kind of adoption path I like. No large migration. No rewrite. No new architecture. Just add the native preview, wire the script, and compare results against the existing compiler.
-
-If something breaks, the fallback command is still there. If the beta keeps working, the project gets faster checks today and a smoother path to the stable release later.
+That is the kind of adoption path I like. No large migration. No rewrite. No new architecture. Upgrade the compiler, run the existing checks, and let the results decide whether the change is ready.
 
 ## Where I Would Be Careful
 
-This is still a beta, so I would not remove the old path too quickly.
+Stable does not mean every integration is automatically compatible.
 
 The safer approach is:
 
-- Keep `typescript` installed for tools that expect it.
-- Add `@typescript/native-preview` for `tsgo`.
-- Run TS7 in the main local type-check script.
-- Keep a TS6 fallback script for comparison.
-- Let CI and local development exercise the beta before relying on it completely.
+- Check whether build tools import TypeScript's JavaScript API.
+- Run application and test configs through TypeScript 7.
+- Verify the framework's production build, not only standalone `tsc`.
+- Keep the dependency change easy to reverse until CI and local workflows agree.
 
-That gives the project useful feedback without betting everything on a preview package.
+TypeScript 7 does not yet expose the old JavaScript compiler API. A tool that imports `typescript/lib/typescript.js` still needs a compatibility package or its own migration path.
 
 I would be especially careful in large repos with custom TypeScript API usage, unusual build plugins, declaration emit pipelines, or older JavaScript with complex JSDoc patterns. Those are exactly the places where a compiler migration deserves more testing.
 
@@ -124,10 +113,10 @@ The biggest benefit is not a new syntax feature. It is a faster feedback loop fo
 
 That is a meaningful ecosystem shift.
 
-The practical path is simple: try `@typescript/native-preview`, run `tsgo` beside `tsc`, keep the fallback, and let real project checks decide. In this repo, that path is already working with Bun, and the result is exactly what good tooling should feel like: faster, smaller, and easy to explain.
+The practical path is simple: install TypeScript 7, run every type-checking config, verify the production build, and let real project checks decide. In this repo, that path is working with Bun and Next.js 16.3, and the result is exactly what good tooling should feel like: faster, smaller, and easy to explain.
 
 ## Sources
 
-- [Announcing TypeScript 7.0 Beta](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0-beta/)
-- [TypeScript Native Preview package](https://www.npmjs.com/package/@typescript/native-preview)
-- [TypeScript Native Preview extension](https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.native-preview)
+- [Announcing TypeScript 7.0](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/)
+- [Next.js 16.3](https://nextjs.org/blog/next-16-3)
+- [Using TypeScript 7 with Next.js](https://nextjs.org/docs/app/api-reference/config/typescript#using-typescript-7)
