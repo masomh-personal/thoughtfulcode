@@ -16,11 +16,10 @@ This gives us readable component APIs plus flexible type composition.
 ## Tooling
 
 - `bun run type-check` and `bun run type-check:tests` both run TypeScript 7 through `tsc --noEmit`.
-- TypeScript 7 is installed as `@typescript/native`, an npm alias for `typescript@7`. The scripts call its binary by path (`./node_modules/@typescript/native/bin/tsc`) because TypeScript 6 ships a competing `tsc` binary, and which one wins the `node_modules/.bin` link depends on install order.
-- The `typescript` package stays pinned to 6.x. TypeScript 7 does not ship a programmatic API yet, and `next build` loads `typescript/lib/typescript.js` to run its own type check. Removing TypeScript 6 breaks the build.
-- Do not alias `typescript` to `@typescript/typescript6`. Bun applies the alias to that package's own nested `typescript` dependency, so it resolves to itself and exports nothing.
-- For editor support in Cursor or VS Code, install the TypeScript 7 extension. The Native Preview extension and its `typescript.experimental.useTsgo` setting are obsolete.
-- Once TypeScript 7.1 ships the new API and Next.js adopts it, drop the alias and the 6.x pin and install `typescript@7` directly.
+- TypeScript 7 is installed directly as the project-local `typescript` package. The scripts call `./node_modules/typescript/bin/tsc` so the compiler choice is explicit.
+- Next.js 16.3 uses the project-local TypeScript CLI by default during `next build`. Local checks, CI, and production builds therefore use the same compiler.
+- TypeScript 7 still does not expose the old JavaScript compiler API. Tools that import `typescript/lib/typescript.js` need their own compatibility path, but this project does not currently have one.
+- For editor support in Cursor or VS Code, use the TypeScript 7 extension. The Native Preview extension and its `typescript.experimental.useTsgo` setting are obsolete.
 
 ---
 

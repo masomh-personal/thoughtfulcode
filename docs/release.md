@@ -31,6 +31,7 @@ The checks cover:
 Use this as the pull request checklist:
 
 - [ ] Scope is clear and limited to the intended change.
+- [ ] `CHANGELOG.md` describes the release and any required follow-up.
 - [ ] `bun audit` passes with no vulnerabilities.
 - [ ] `bun run healthcheck` passes locally.
 - [ ] `bun run build` passes locally.

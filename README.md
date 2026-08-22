@@ -10,16 +10,16 @@ A modern, performance-focused portfolio website showcasing software engineering 
 
 | Layer                       | Technology                                  | Rationale                                                                         |
 | --------------------------- | ------------------------------------------- | --------------------------------------------------------------------------------- |
-| **Framework**               | Next.js 16 (App Router)                     | Production-ready, excellent docs, perfect for SSG + SEO, React 19 support         |
+| **Framework**               | Next.js 16.3 (App Router)                   | Production-ready, excellent docs, perfect for SSG + SEO, React 19 support         |
 | **React**                   | React 19                                    | Server Components, enhanced performance, required for Next.js 16                  |
-| **Language**                | TypeScript 7 (native Go compiler)           | Native-speed type checking, with TypeScript 6 kept only for Next.js build tooling |
+| **Language**                | TypeScript 7 (native Go compiler)           | Native-speed type checking locally and during Next.js production builds           |
 | **Styling**                 | Tailwind CSS                                | Utility-first, fast development, great with Next.js                               |
 | **Content**                 | Markdown + react-markdown                   | Version-controlled content rendered as Server Components                          |
 | **Syntax Highlighting**     | rehype-highlight                            | Build-time highlighting without a client-side syntax highlighter                  |
 | **Frontmatter Parsing**     | @11ty/gray-matter                           | Extract metadata from Markdown files                                              |
 | **Frontmatter Validation**  | Valibot                                     | Lightweight schema validation (~1KB vs Zod's ~14KB), better performance           |
 | **Linting & Formatting**    | Oxfmt + Oxlint                              | Oxc-powered formatter and linter with fast JS/TS, React, a11y, and Next.js checks |
-| **Runtime**                 | Bun (version pinned in `package.json`)      | Fast installs, built-in test runner, instant TypeScript, production-ready         |
+| **Runtime**                 | Bun 1.4 (pinned in `package.json`)          | Fast installs, built-in test runner, instant TypeScript, production-ready         |
 | **BaaS (Future, optional)** | Supabase / Appwrite                         | Add only when write-path/auth requirements appear                                 |
 | **Deployment**              | Vercel                                      | Git-native deploys, previews for PRs, simple static-first workflow                |
 | **UI Approach**             | Custom wrapper components (`components/ui`) | Design-system control with lightweight dependencies                               |
@@ -161,7 +161,7 @@ describe("Feature Name", () => {
 - **Strict Mode:** Enabled
 - **Explicit Return Types:** Required for all exported functions
 - **Type Checking:** Run `bun run type-check` before committing. This uses the TypeScript 7 native compiler.
-- **TypeScript 6:** Still installed, but only so `next build` can load the compiler API that TypeScript 7 does not ship yet. See [`docs/typescript-conventions.md`](docs/typescript-conventions.md).
+- **Next.js builds:** Next.js 16.3 runs the project-local TypeScript 7 CLI, so local checks and production builds share one compiler.
 - **Typing Convention:** `interface` for object/props contracts, `type` for unions/aliases
 
 ### Git Hooks
