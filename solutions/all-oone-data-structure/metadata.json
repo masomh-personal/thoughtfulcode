@@ -1,0 +1,10 @@
+{
+    "title": "All O`one Data Structure",
+    "slug": "all-oone-data-structure",
+    "source": "leetcode",
+    "difficulty": "hard",
+    "datePublished": "2026-08-30",
+    "timeComplexity": "O(1)",
+    "spaceComplexity": "O(n)",
+    "excerpt": "Design a frequency tracker with constant-time increments, decrements, and minimum or maximum key lookup."
+}

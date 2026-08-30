@@ -2,6 +2,13 @@
 
 Notable changes to hamadeh.io are documented here by release.
 
+## 3.6.0 - 2026-08-30
+
+### Added
+
+- Published a practical guide to choosing classes for objects with identity, evolving state, and protected invariants.
+- Added a from-scratch `AllOne` frequency tracker with average `O(1)` operations, comprehensive tests, and a Hard problem post.
+
 ## 3.5.1 - 2026-08-30
 
 ### Security
