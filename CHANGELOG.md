@@ -2,6 +2,16 @@
 
 Notable changes to hamadeh.io are documented here by release.
 
+## 3.5.1 - 2026-08-30
+
+### Security
+
+- Upgraded Next.js to 16.3.3 to patch two critical unauthenticated remote code execution vulnerabilities affecting AVIF image optimization and Windows-hosted servers.
+
+### Changed
+
+- Updated Node and React DOM types, Oxfmt, Oxlint, Sharp, and browser compatibility data to their current stable releases.
+
 ## 3.5.0 - 2026-08-22
 
 ### Added
@@ -21,7 +31,3 @@ Notable changes to hamadeh.io are documented here by release.
 
 - Removed the high-severity `js-yaml` and `nanoid` advisories from the locked dependency graph.
 - Verified the lockfile with Bun's advisory audit and blocked dependency-script report.
-
-### Follow-up
-
-- Upgrade Next.js to 16.3.3 after its announced critical security patch is published on August 26, 2026.
