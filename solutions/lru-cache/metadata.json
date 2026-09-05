@@ -1,0 +1,10 @@
+{
+    "title": "LRU Cache",
+    "slug": "lru-cache",
+    "source": "leetcode",
+    "difficulty": "medium",
+    "datePublished": "2026-09-05",
+    "timeComplexity": "O(1)",
+    "spaceComplexity": "O(capacity)",
+    "excerpt": "Design a fixed-capacity cache with constant-time reads and writes that evicts the least recently used key once it runs out of room."
+}
